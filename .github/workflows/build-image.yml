@@ -1,4 +1,4 @@
-name: Build and Publish Docker Image
+name: Build Docker Image
 
 on:
   push:
@@ -25,10 +25,6 @@ jobs:
       run: |
         echo ${{ secrets.ACR_PASSWORD }} | docker login ${{ secrets.ACR_LOGIN_SERVER }} -u ${{ secrets.ACR_USERNAME }} --password-stdin
 
-    - name: Build and push Docker image
+    - name: Build Docker image
       run: |
         docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/weather-api:${{ github.sha }} -f WeatherAPI/Dockerfile .
-        docker push ${{ secrets.ACR_LOGIN_SERVER }}/weather-api:${{ github.sha }}
-
-    - name: Log out from Azure Container Registry
-      run: docker logout ${{ secrets.ACR_LOGIN_SERVER }}

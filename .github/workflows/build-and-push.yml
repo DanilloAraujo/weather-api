@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,6 +33,12 @@ jobs:
         docker tag ${{ secrets.ACR_LOGIN_SERVER }}/weather-api:${{ github.sha }} ${{ secrets.ACR_LOGIN_SERVER }}/weather-api:latest
         docker push ${{ secrets.ACR_LOGIN_SERVER }}/weather-api:${{ github.sha }}
         docker push ${{ secrets.ACR_LOGIN_SERVER }}/weather-api:latest
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'webapp-weather'
+        images: '${{ secrets.ACR_LOGIN_SERVER }}/weather-api:latest'
 
     - name: Log out from Azure Container Registry
       run: docker logout ${{ secrets.ACR_LOGIN_SERVER }}

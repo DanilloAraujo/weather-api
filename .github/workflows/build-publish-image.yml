@@ -27,7 +27,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/weather-api:${{ github.sha }} .
+        docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/weather-api:${{ github.sha }} -f WeatherAPI/Dockerfile .
         docker push ${{ secrets.ACR_LOGIN_SERVER }}/weather-api:${{ github.sha }}
 
     - name: Log out from Azure Container Registry
